@@ -18,17 +18,17 @@ void wypisanie(struct szachownica plansza)
 struct szachownica start(void)
 {
     struct szachownica start =
-        {.plansza = {{'s', 'S', 'G', 'H', 'K', 'G', ' ', ' '},
-                     {'P', ' ', 'K', 'p', 'P', 'p', 'p', 'P'},
-                     {' ', ' ', 'p', 'h', 'k', 'p', ' ', ' '},
-                     {' ', 'P', 'g', 'k', 'w', 'p', ' ', ' '},
-                     {' ', 'p', ' ', 'p', 's', 'p', ' ', 'W'},
-                     {' ', 'p', ' ', 's', 'p', 'p', ' ', ' '},
-                     {'p', 'p', 'g', 'p', 'p', 'p', ' ', ' '},
-                     {'w', ' ', ' ', ' ', 'k', 'g', 's', 'w'}},
-         .ruch = 0,
-         .enpassant = {3, 3},
-         .roszada = {{1, 1}, {1, 1}}};
+        {.plansza = {{' ', 'S', ' ', 'K', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', 'p', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', 'p', ' ', ' '},
+                     {'p', ' ', ' ', 'k', ' ', ' ', ' ', ' '}},
+         .ruch = -1,
+         .enpassant = {0, 0},
+         .roszada = {{0, 0}, {0, 0}}};
     return start;
 }
 
@@ -55,24 +55,34 @@ char liczby_na_litery(int co)
 
 int ocena(struct szachownica gra)
 {
-    char szukana;
-    if (gra.ruch == 0) //zero to biale 1 to czarne duze biale male czarne
+    char szukana, szukana2;
+    int ocena = 0;
+    if (gra.ruch == 1) //1 to biale -1 to czarne duze biale male czarne
+    {
         szukana = 'K';
-    else if (gra.ruch == 1)
+        szukana2 = 'k';
+    }
+    else if (gra.ruch == -1)
+    {
         szukana = 'k';
+        szukana2 = 'K';
+    }
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
             if (gra.plansza[i][j] == szukana)
-                return 0;
+                ocena++;
+            if (gra.plansza[i][j] == szukana2)
+                ocena = ocena + 2;
         }
     }
-    if (szukana == 'k')
-        return -1;
-    else if (szukana == 'K')
-        return 1;
-    return -1;
+    if (ocena == 3)
+        return sumabierek(&gra);
+    if (ocena == 2)
+        return -100;
+    if (ocena == 1)
+        return 100;
 }
 ruchy *pamiec()
 {
@@ -80,7 +90,7 @@ ruchy *pamiec()
     return wynik;
 }
 
-glowalisty *listaruchow(szachownica *plansza, int kolor)
+ruchy *listaruchow(szachownica *plansza, int kolor)
 {
     glowalisty *glowa = (glowalisty *)malloc(sizeof(glowalisty));
     glowa->glowa = (ruchy *)malloc(sizeof(ruchy));
@@ -141,34 +151,90 @@ glowalisty *listaruchow(szachownica *plansza, int kolor)
             }
         }
     }
-    return glowa;
+    lista->next = NULL;
+    ruchy *cos = glowa->glowa;
+    while (cos->next != lista)
+    {
+        cos = cos->next;
+    }
+    cos->next = NULL;
+    lista = NULL;
+    free(cos->next);
+    //free(lista);
+    return glowa->glowa;
 }
 
-void wypiszliste(glowalisty *glowa)
+void wypiszliste(ruchy *glowa)
 {
-    ruchy *lista = glowa->glowa;
-    while (lista->next != NULL)
+    ruchy *lista = glowa;
+    while (lista)
     {
         printf("%d%d %d%d %c\n", lista->z[0], lista->z[1], lista->d[0], lista->d[1], lista->promocja);
         lista = lista->next;
     }
 }
+
+struct szachownica wykonajruch(struct szachownica gra, ruchy *lr)
+{
+    if (lr->promocja)
+    {
+        gra.plansza[lr->z[0]][lr->z[1]] = ' ';
+        gra.plansza[lr->d[0]][lr->d[1]] = lr->promocja;
+        gra.ruch = -gra.ruch;
+    }
+    else
+    {
+        char fig = gra.plansza[lr->z[0]][lr->z[1]];
+        gra.plansza[lr->z[0]][lr->z[1]] = ' ';
+        gra.plansza[lr->d[0]][lr->d[1]] = fig;
+        gra.ruch = -gra.ruch;
+    }
+    return gra;
+}
+
+int sumabierek(struct szachownica *gra)
+{
+    int wynik = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (gra->plansza[i][j] == ' ' || gra->plansza[i][j] == 'K' || gra->plansza[i][j] == 'k')
+            {
+            }
+            if (gra->plansza[i][j] == 'P')
+                wynik++;
+            if (gra->plansza[i][j] == 'W')
+                wynik = wynik + 5;
+            if (gra->plansza[i][j] == 'S' || gra->plansza[i][j] == 'G')
+                wynik = wynik + 3;
+            if (gra->plansza[i][j] == 'H')
+                wynik = wynik + 9;
+            if (gra->plansza[i][j] == 'p')
+                wynik = wynik - 1;
+            if (gra->plansza[i][j] == 'w')
+                wynik = wynik - 5;
+            if (gra->plansza[i][j] == 's' || gra->plansza[i][j] == 'g')
+                wynik = wynik - 3;
+            if (gra->plansza[i][j] == 'h')
+                wynik = wynik - 9;
+        }
+    }
+    return wynik * gra->ruch;
+}
+
 int main()
 {
     struct szachownica plansza = start();
     wypisanie(plansza);
     printf("%d\n", ocena(plansza));
-    //glowalisty *glowa = (glowalisty *)malloc(sizeof(glowalisty));
-    //glowa->glowa = (ruchy *)malloc(sizeof(ruchy));
-    //ruchy *ruch1;
-    //printf("czy to dziala\n");
-    //ruchy *lista = glowa->glowa;
-    //lista = ruchyhetmana(0, 3, lista, &plansza, 1);
-    //lista = ruchyskoczka(0, 1, lista, &plansza, 1);
-    //printf("xd\n");
-    glowalisty *glowa = listaruchow(&plansza, 1);
+    ruchy *glowa = listaruchow(&plansza, -1);
     wypiszliste(glowa);
-    // glowalisty *lista = listaruchow(&plansza, 1);
-    //printf("xd\n");
-    //wypiszliste(lista);
+    printf("xd\n");
+    wykonajruch(plansza, glowa);
+    glowa = listaruchow(&plansza, 1);
+    wypiszliste(glowa);
+    int ocena1 = negmax(&plansza, 1, -1000, 1000);
+    printf("ocena= %d\n", ocena1);
+    printf("%d\n", ocena(plansza));
 }
