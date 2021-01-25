@@ -202,52 +202,65 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
     }
     if (tryb == 1)
     {
-        if (baza->roszada[0][0] == 1 && czy_szachowane(baza, 0, 1) == 0 && czy_szachowane(baza, 0, 2) == 0 && czy_szachowane(baza, 0, 3) == 0)
+
+        if (baza->plansza[0][1] == ' ' && baza->plansza[0][2] == ' ' && baza->roszada[1][0] == 1)
         {
-            printf("czy to dziala\n");
-            koniec->z[0] = i; //roszada w lewo dla bialego
-            koniec->z[1] = j;
-            koniec->d[0] = i;
-            koniec->d[1] = j - 2;
-            koniec->roszada = 'r';
-            koniec->next = pamiec();
-            koniec = koniec->next;
+            if (baza->roszada[0][0] == 1 && czy_szachowane(baza, 0, 1) == 0 && czy_szachowane(baza, 0, 2) == 0 && czy_szachowane(baza, 0, 3) == 0 && baza->plansza[0][0] == 'W')
+            {
+                printf("czy to dziala\n");
+                koniec->z[0] = i; //roszada w lewo dla bialego
+                koniec->z[1] = j;
+                koniec->d[0] = i;
+                koniec->d[1] = j - 2;
+                koniec->roszada = 'r';
+                koniec->next = pamiec();
+                koniec = koniec->next;
+            }
         }
-        if (baza->roszada[0][1] == 1 && czy_szachowane(baza, 0, 4) == 0 && czy_szachowane(baza, 0, 5) == 0 && czy_szachowane(baza, 0, 3) == 0)
+        if (baza->plansza[0][4] == ' ' && baza->plansza[0][5] == ' ' && baza->plansza[0][6] == ' ' && baza->roszada[1][0] == 1)
         {
-            koniec->z[0] = i; //roszada w prawo dla bialego
-            koniec->z[1] = j;
-            koniec->d[0] = i;
-            koniec->d[1] = j + 2;
-            koniec->roszada = 'r';
-            koniec->next = pamiec();
-            koniec = koniec->next;
+            if (baza->roszada[0][1] == 1 && czy_szachowane(baza, 0, 4) == 0 && czy_szachowane(baza, 0, 5) == 0 && czy_szachowane(baza, 0, 3) == 0 && baza->plansza[0][7] == 'W')
+            {
+                koniec->z[0] = i; //roszada w prawo dla bialego
+                koniec->z[1] = j;
+                koniec->d[0] = i;
+                koniec->d[1] = j + 2;
+                koniec->roszada = 'r';
+                koniec->next = pamiec();
+                koniec = koniec->next;
+            }
         }
     }
     if (tryb == -1)
     {
 
         printf("czy to dziala\n");
-        if (baza->roszada[1][0] == 1 && czy_szachowane(baza, 7, 1) == 0 && czy_szachowane(baza, 7, 2) == 0 && czy_szachowane(baza, 7, 3) == 0)
+        if (baza->plansza[7][1] == ' ' && baza->plansza[7][2] == ' ' && baza->roszada[1][0] == 1 && baza->plansza[7][0] == 'w')
         {
-            printf("czy to dziala\n");
-            koniec->z[0] = i; //roszada w lewo dla czarnego
-            koniec->z[1] = j;
-            koniec->d[0] = i;
-            koniec->d[1] = j - 2;
-            koniec->roszada = 'r';
-            koniec->next = pamiec();
-            koniec = koniec->next;
+            if (czy_szachowane(baza, 7, 1) == 0 && czy_szachowane(baza, 7, 2) == 0 && czy_szachowane(baza, 7, 3) == 0)
+            {
+                printf("czy to dziala\n");
+                koniec->z[0] = i; //roszada w lewo dla czarnego
+                koniec->z[1] = j;
+                koniec->d[0] = i;
+                koniec->d[1] = j - 2;
+                koniec->roszada = 'r';
+                koniec->next = pamiec();
+                koniec = koniec->next;
+            }
         }
-        if (baza->roszada[1][1] == 1 && czy_szachowane(baza, 7, 4) == 0 && czy_szachowane(baza, 7, 5) == 0 && czy_szachowane(baza, 7, 3) == 0)
+        if (baza->plansza[7][4] == ' ' && baza->plansza[7][5] == ' ' && baza->plansza[7][6] == ' ' && baza->roszada[1][1] == 1 && baza->plansza[7][7] == 'w')
         {
-            koniec->z[0] = i; //roszada w prawo dla czarnego
-            koniec->z[1] = j;
-            koniec->d[0] = i;
-            koniec->d[1] = j + 2;
-            koniec->roszada = 'r';
-            koniec->next = pamiec();
-            koniec = koniec->next;
+            if (baza->roszada[1][1] == 1 && czy_szachowane(baza, 7, 4) == 0 && czy_szachowane(baza, 7, 5) == 0 && czy_szachowane(baza, 7, 3) == 0)
+            {
+                koniec->z[0] = i; //roszada w prawo dla czarnego
+                koniec->z[1] = j;
+                koniec->d[0] = i;
+                koniec->d[1] = j + 2;
+                koniec->roszada = 'r';
+                koniec->next = pamiec();
+                koniec = koniec->next;
+            }
         }
     }
     return koniec;

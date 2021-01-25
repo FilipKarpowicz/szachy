@@ -49,17 +49,17 @@ int jaka_bierka(char co)
 struct szachownica start(void)
 {
     struct szachownica start =
-        {.plansza = {{'W', 'S', 'G', 'K', 'H', 'G', 'S', 'W'},
-                     {'P', 'P', 'P', ' ', ' ', ' ', 'P', 'P'},
-                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                     {' ', ' ', ' ', 'W', ' ', ' ', ' ', ' '},
+        {.plansza = {{' ', ' ', ' ', 'K', ' ', ' ', ' ', 'W'},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                     {'w', ' ', ' ', 'k', ' ', ' ', ' ', ' '}},
-         .ruch = -1,
+                     {' ', ' ', ' ', ' ', 'P', ' ', ' ', ' '},
+                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                     {' ', ' ', ' ', 'p', ' ', 'p', ' ', ' '},
+                     {' ', ' ', ' ', 'k', ' ', ' ', ' ', 'w'}},
+         .ruch = 1,
          .enpassant = {0, 0},
-         .roszada = {{1, 1}, {1, 1}}};
+         .roszada = {{0, 0}, {0, 0}}};
     return start;
 }
 
@@ -145,8 +145,8 @@ ruchy *listaruchow(szachownica *plansza, int kolor)
                     lista = ruchyhetmana(i, j, lista, plansza, 1);
                 if (plansza->plansza[i][j] == 'G')
                     lista = ruchygonca(i, j, lista, plansza, 1);
-                if (plansza->plansza[i][j] == 'W')
-                    lista = ruchywiezy(i, j, lista, plansza, 1);
+                //if (plansza->plansza[i][j] == 'W')
+                // lista = ruchywiezy(i, j, lista, plansza, 1);
                 if (plansza->plansza[i][j] == 'S')
                     lista = ruchyskoczka(i, j, lista, plansza, 1);
                 //printf("xd\n");
@@ -168,8 +168,8 @@ ruchy *listaruchow(szachownica *plansza, int kolor)
                     lista = ruchyhetmana(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 'g')
                     lista = ruchygonca(i, j, lista, plansza, -1);
-                if (plansza->plansza[i][j] == 'w')
-                    lista = ruchywiezy(i, j, lista, plansza, -1);
+                //if (plansza->plansza[i][j] == 'w')
+                //lista = ruchywiezy(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 's')
                     lista = ruchyskoczka(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 'p')
@@ -229,6 +229,34 @@ struct szachownica wykonajruch(struct szachownica gra, ruchy *lr)
         gra.roszada[1][0] = 0;
         gra.roszada[1][1] = 0;
     }
+    if (lr->roszada == 'r' && gra.ruch == 1 && lr->z[1] - lr->d[1] == 2)
+    {
+        gra.plansza[0][1] = 'K';
+        gra.plansza[0][0] = ' ';
+        gra.plansza[0][3] = ' ';
+        gra.plansza[0][2] = 'W';
+    }
+    if (lr->roszada == 'r' && gra.ruch == -1 && lr->z[1] - lr->d[1] == 2)
+    {
+        gra.plansza[7][1] = 'k';
+        gra.plansza[7][0] = ' ';
+        gra.plansza[7][3] = ' ';
+        gra.plansza[7][2] = 'w';
+    }
+    if (lr->roszada == 'r' && gra.ruch == 1 && lr->z[1] - lr->d[1] == -2)
+    {
+        gra.plansza[0][5] = 'K';
+        gra.plansza[0][7] = ' ';
+        gra.plansza[0][3] = ' ';
+        gra.plansza[0][4] = 'W';
+    }
+    if (lr->roszada == 'r' && gra.ruch == -1 && lr->z[1] - lr->d[1] == -2)
+    {
+        gra.plansza[7][5] = 'k';
+        gra.plansza[7][7] = ' ';
+        gra.plansza[7][3] = ' ';
+        gra.plansza[7][4] = 'w';
+    }
     if (gra.plansza[lr->z[0]][lr->z[1]] == 'P' || gra.plansza[lr->z[0]][lr->z[1]] == 'p')
     {
         // printf("lr z %d d %d\n", lr->z[0], lr->d[0]);
@@ -245,7 +273,7 @@ struct szachownica wykonajruch(struct szachownica gra, ruchy *lr)
         gra.plansza[lr->d[0]][lr->d[1]] = lr->promocja;
         gra.ruch = -gra.ruch;
     }
-    else
+    else if (lr->roszada != 'r')
     {
         char fig = gra.plansza[lr->z[0]][lr->z[1]];
         gra.plansza[lr->z[0]][lr->z[1]] = ' ';
@@ -336,13 +364,13 @@ int main()
     //printf("%d\n", ocena(plansza));
     ruchy *glowa = listaruchow(&plansza, plansza.ruch);
     printf("czy dziala\n");
-    wypiszliste(glowa);
+    //wypiszliste(glowa);
 
     // glowa = listaruchow(&plansza, plansza.ruch);
     //wypiszliste(glowa);
-    int ocena1 = negmax(&plansza, 1, -1000, 1000);
-    printf("wynik negmax= %d\n", ocena1);
-    printf("ocena wezla%d\n", ocena(plansza));
+    //int ocena1 = negmax(&plansza, 1, -1000, 1000);
+    //printf("wynik negmax= %d\n", ocena1);
+    //printf("ocena wezla%d\n", ocena(plansza));
 
     /*e = najlepszy_ruch1(&plansza, 1, -1000, 1000);
     f = najlepszy_ruch2(&plansza, 1, -1000, 1000);
@@ -352,23 +380,40 @@ int main()
            e, f, g, h);
     plansza = wykonajruchpatologiczny(plansza, glowa, e, f, g, h);
     wypisanie(&plansza, Bierki);*/
-    int i, j, k, l;
+    int i = 6, j = 5, k = 4, l = 5;
     ruchy *ruchgracza = malloc(sizeof(ruchy));
-    ruchy *ruch;
-    for (int i = 0; i < 1; i++)
+    //ruchy *ruch;
+    ruchgracza->z[0] = i;
+    ruchgracza->z[1] = j;
+    ruchgracza->d[0] = k;
+    ruchgracza->d[1] = l;
+    printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
+    plansza = wykonajruch(plansza, ruchgracza);
+    plansza.ruch = 1;
+    printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
+    glowa = listaruchow(&plansza, plansza.ruch);
+    wypiszliste(glowa);
+    //for (int i = 0; i < 5; i++)
     {
-        ruch = jakiruch(&plansza, 4, -1000, 1000);
-        plansza = wykonajruch(plansza, ruch);
-        wypisanie(&plansza, Bierki);
-        printf("\n");
-        scanf("%d%d%d%d", &i, &j, &k, &l);
-        ruchgracza->z[0] = i;
-        ruchgracza->z[1] = j;
-        ruchgracza->d[0] = k;
-        ruchgracza->d[1] = l;
-        plansza = wykonajruch(plansza, ruchgracza);
-        wypisanie(&plansza, Bierki);
-        printf("\n");
+        ///ruch = jakiruch(&plansza, 4, -1000, 1000);
+        //plansza = wykonajruch(plansza, ruch);
+        //wypisanie(&plansza, Bierki);
+        //printf("\n");
+        //scanf("%d%d%d%d", &i, &j, &k, &l);
+        //ruchgracza->z[0] = i;
+        //ruchgracza->z[1] = j;
+        //ruchgracza->d[0] = k;
+        //ruchgracza->d[1] = l;
     }
+    printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
+    wypisanie(&plansza, Bierki);
+    ruchgracza->z[0] = 6;
+    ruchgracza->z[1] = 3;
+    ruchgracza->d[0] = 4;
+    ruchgracza->d[1] = 3;
+    plansza = wykonajruch(plansza, ruchgracza);
+    wypisanie(&plansza, Bierki);
+    glowa = listaruchow(&plansza, 1);
+    wypiszliste(glowa);
     // printf("czy szach %d\n", czy_szachowane(&plansza, 7, 3));
 }

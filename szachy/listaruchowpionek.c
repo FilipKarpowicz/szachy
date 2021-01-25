@@ -299,8 +299,10 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
     }
     if (baza->enpassant[0] != 100 && baza->enpassant[1] != 100)
     {
+        printf("zrobilem sie2 %d %d\n", i, j - 1);
         if (i == baza->enpassant[0] && j - 1 == baza->enpassant[1])
         {
+            printf("zrobilem sie\n");
             koniec->z[0] = (i); //bicie w locie w lewo
             koniec->z[1] = j;
             koniec->d[0] = i + kolor;
