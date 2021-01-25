@@ -4,18 +4,19 @@
 
 ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
 {
-    if (baza->plansza[i + kolor][j] == ' ' && i + kolor < 8 && i + kolor > 0)
+    if (baza->plansza[i + kolor][j] == ' ' && i + kolor < 8 && i + kolor >= 0)
     {
         //printf("%c\n", liczby_na_litery(i));
+        //ruch bialego zwykly
         koniec->z[0] = (i);
         koniec->z[1] = j;
         koniec->d[0] = (i + kolor);
         koniec->d[1] = j;
         //printf("czy to dziala\n");
         koniec->next = pamiec();
-        if (i + kolor == 7 || i + kolor == 0) //ruch do przodu bez bicia
+        if (i + kolor == 7 && kolor == 1) //promocja bialego
         {
-            koniec->promocja = 'W';
+            koniec->promocja = 'H';
             koniec = koniec->next;
             koniec->next = pamiec();
             koniec->z[0] = (i);
@@ -36,7 +37,7 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->z[1] = j;
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j;
-            koniec->promocja = 'H';
+            koniec->promocja = 'W';
             koniec = koniec->next;
             koniec->next = pamiec();
             koniec->z[0] = (i);
@@ -44,6 +45,38 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j;
             koniec->promocja = 'K';
+        }
+        else if (kolor == -1 && i + kolor == 0) //promocja czarnego
+        {
+            koniec->promocja = 'h';
+            koniec = koniec->next;
+            koniec->next = pamiec();
+            koniec->z[0] = (i);
+            koniec->z[1] = j;
+            koniec->d[0] = (i + kolor);
+            koniec->d[1] = j;
+            koniec->promocja = 's';
+            koniec = koniec->next;
+            koniec->next = pamiec();
+            koniec->z[0] = (i);
+            koniec->z[1] = j;
+            koniec->d[0] = (i + kolor);
+            koniec->d[1] = j;
+            koniec->promocja = 'g';
+            koniec = koniec->next;
+            koniec->next = pamiec();
+            koniec->z[0] = (i);
+            koniec->z[1] = j;
+            koniec->d[0] = (i + kolor);
+            koniec->d[1] = j;
+            koniec->promocja = 'w';
+            koniec = koniec->next;
+            koniec->next = pamiec();
+            koniec->z[0] = (i);
+            koniec->z[1] = j;
+            koniec->d[0] = (i + kolor);
+            koniec->d[1] = j;
+            koniec->promocja = 'k';
         }
         koniec = koniec->next;
     }
@@ -78,7 +111,7 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j + 1;
             koniec->next = pamiec();
-            if (i + kolor == 7 || i + kolor == 0)
+            if (i + kolor == 7)
             {
                 koniec->promocja = 'W';
                 koniec = koniec->next;
@@ -125,7 +158,7 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j + 1;
             koniec->next = pamiec();
-            if (i + kolor == 7 || i + kolor == 0)
+            if (i + kolor == 0)
             {
                 koniec->promocja = 'w';
                 koniec = koniec->next;
@@ -171,7 +204,7 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j - 1;
             koniec->next = pamiec();
-            if (i + kolor == 7 || i + kolor == 0)
+            if (i + kolor == 0)
             {
                 koniec->promocja = 'w';
                 koniec = koniec->next;
@@ -216,7 +249,7 @@ ruchy *ruchypiona(int i, int j, ruchy *koniec, szachownica *baza, int kolor)
             koniec->d[0] = (i + kolor);
             koniec->d[1] = j - 1;
             koniec->next = pamiec();
-            if (i + kolor == 7 || i + kolor == 0)
+            if (i + kolor == 7)
             {
                 koniec->promocja = 'W';
                 koniec = koniec->next;

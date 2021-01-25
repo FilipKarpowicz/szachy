@@ -1,4 +1,4 @@
-#include"stan_gry_def.h"
+#include "stan_gry_def.h"
 
 ruchy *ruchygonca(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
 {
@@ -41,7 +41,7 @@ ruchy *ruchygonca(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
         }
     }
     k = i - 1;
-    l = i - 1;
+    l = j - 1;
     while (baza->plansza[k][l] == ' ' && k < 8 && k >= 0 && l < 8 && l >= 0)
     {
         koniec->z[0] = i; //ruch -1,-1
@@ -79,7 +79,7 @@ ruchy *ruchygonca(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
         }
     }
     k = i + 1;
-    l = i - 1;
+    l = j - 1;
     while (baza->plansza[k][l] == ' ' && k < 8 && k >= 0 && l < 8 && l >= 0)
     {
         koniec->z[0] = i; //ruch +1,-1

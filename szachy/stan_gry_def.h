@@ -39,9 +39,18 @@ struct szachownica wykonajruch(struct szachownica gra, ruchy *lr);
 int negmax(struct szachownica *sz, int glebokosc, int alfa, int beta);
 int ocena(struct szachownica gra);
 void zwolnienie_listy(ruchy *glowa);
-void wypisanie(struct szachownica plansza);
+void wypisanie(struct szachownica *plansza, char **Bierki);
 void wypiszliste(ruchy *glowa);
 int sumabierek(struct szachownica *gra);
+
+int najlepszy_ruch1(struct szachownica *sz, int glebokosc, int alfa, int beta);
+int najlepszy_ruch2(struct szachownica *sz, int glebokosc, int alfa, int beta);
+int najlepszy_ruch3(struct szachownica *sz, int glebokosc, int alfa, int beta);
+int najlepszy_ruch4(struct szachownica *sz, int glebokosc, int alfa, int beta);
+struct szachownica wykonajruchpatologiczny(struct szachownica gra, ruchy *lr, int a, int b, int c, int d);
+int jaka_bierka(char co);
+int czy_szachowane(szachownica *mapa, int y, int x);
+ruchy *jakiruch(struct szachownica *sz, int glebokosc, int alfa, int beta);
 
 #include <stdlib.h>
 #include <stdio.h>

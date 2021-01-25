@@ -193,8 +193,10 @@ ruchy *ruchyhetmana(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
     }
     k = i - 1;
     l = j;
+    // printf(" k %d l %d\n", i, j);
     while (baza->plansza[k][l] == ' ' && k < 8 && k >= 0 && l < 8 && l >= 0)
     {
+        //printf("czy dziala\n");
         koniec->z[0] = i; //ruch -1,0
         koniec->z[1] = j;
         koniec->d[0] = k;
@@ -229,9 +231,11 @@ ruchy *ruchyhetmana(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
         }
     }
     k = i;
-    l = i - 1;
+    l = j - 1;
+
     while (baza->plansza[k][l] == ' ' && k < 8 && k >= 0 && l < 8 && l >= 0)
     {
+
         koniec->z[0] = i; //ruch 0,-1
         koniec->z[1] = j;
         koniec->d[0] = k;

@@ -202,8 +202,9 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
     }
     if (tryb == 1)
     {
-        if (baza->roszada[0][0] == 1)
+        if (baza->roszada[0][0] == 1 && czy_szachowane(baza, 0, 1) == 0 && czy_szachowane(baza, 0, 2) == 0 && czy_szachowane(baza, 0, 3) == 0)
         {
+            printf("czy to dziala\n");
             koniec->z[0] = i; //roszada w lewo dla bialego
             koniec->z[1] = j;
             koniec->d[0] = i;
@@ -212,7 +213,7 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
             koniec->next = pamiec();
             koniec = koniec->next;
         }
-        if (baza->roszada[0][1] == 1)
+        if (baza->roszada[0][1] == 1 && czy_szachowane(baza, 0, 4) == 0 && czy_szachowane(baza, 0, 5) == 0 && czy_szachowane(baza, 0, 3) == 0)
         {
             koniec->z[0] = i; //roszada w prawo dla bialego
             koniec->z[1] = j;
@@ -225,8 +226,11 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
     }
     if (tryb == -1)
     {
-        if (baza->roszada[1][0] == 1)
+
+        printf("czy to dziala\n");
+        if (baza->roszada[1][0] == 1 && czy_szachowane(baza, 7, 1) == 0 && czy_szachowane(baza, 7, 2) == 0 && czy_szachowane(baza, 7, 3) == 0)
         {
+            printf("czy to dziala\n");
             koniec->z[0] = i; //roszada w lewo dla czarnego
             koniec->z[1] = j;
             koniec->d[0] = i;
@@ -235,7 +239,7 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
             koniec->next = pamiec();
             koniec = koniec->next;
         }
-        if (baza->roszada[1][1] == 1)
+        if (baza->roszada[1][1] == 1 && czy_szachowane(baza, 7, 4) == 0 && czy_szachowane(baza, 7, 5) == 0 && czy_szachowane(baza, 7, 3) == 0)
         {
             koniec->z[0] = i; //roszada w prawo dla czarnego
             koniec->z[1] = j;

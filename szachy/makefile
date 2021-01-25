@@ -1,4 +1,4 @@
-DEPS = wypisanie.c listaruchowgonca.c listaruchowhetmana.c listaruchowkrola.c listaruchowpionek.c listaruchowskoczka.c listaruchowwiezy.c negamax.c
+DEPS = wypisanie.c czy_szach.c listaruchowgonca.c listaruchowhetmana.c listaruchowkrola.c listaruchowpionek.c listaruchowskoczka.c listaruchowwiezy.c negamax.c
 
 wypisanie:$(DEPS)
 	gcc $(DEPS) -Wall --pedantic -o $@ 
