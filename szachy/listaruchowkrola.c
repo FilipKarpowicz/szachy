@@ -207,7 +207,7 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
         {
             if (baza->roszada[0][0] == 1 && czy_szachowane(baza, 0, 1) == 0 && czy_szachowane(baza, 0, 2) == 0 && czy_szachowane(baza, 0, 3) == 0 && baza->plansza[0][0] == 'W')
             {
-                printf("czy to dziala\n");
+                //printf("czy to dziala\n");
                 koniec->z[0] = i; //roszada w lewo dla bialego
                 koniec->z[1] = j;
                 koniec->d[0] = i;
@@ -234,12 +234,12 @@ ruchy *ruchykrola(int i, int j, ruchy *koniec, szachownica *baza, int tryb)
     if (tryb == -1)
     {
 
-        printf("czy to dziala\n");
+        //printf("czy to dziala\n");
         if (baza->plansza[7][1] == ' ' && baza->plansza[7][2] == ' ' && baza->roszada[1][0] == 1 && baza->plansza[7][0] == 'w')
         {
             if (czy_szachowane(baza, 7, 1) == 0 && czy_szachowane(baza, 7, 2) == 0 && czy_szachowane(baza, 7, 3) == 0)
             {
-                printf("czy to dziala\n");
+                // printf("czy to dziala\n");
                 koniec->z[0] = i; //roszada w lewo dla czarnego
                 koniec->z[1] = j;
                 koniec->d[0] = i;

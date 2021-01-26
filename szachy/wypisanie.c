@@ -44,19 +44,20 @@ int jaka_bierka(char co)
         return 11;
     if (co == ' ')
         return 12;
+    return -1;
 }
 
 struct szachownica start(void)
 {
     struct szachownica start =
-        {.plansza = {{' ', ' ', ' ', 'K', ' ', ' ', ' ', 'W'},
+        {.plansza = {{'W', 'S', 'G', 'K', 'H', 'G', 'S', 'W'},
+                     {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                     {' ', ' ', ' ', ' ', 'P', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                     {' ', ' ', ' ', 'p', ' ', 'p', ' ', ' '},
-                     {' ', ' ', ' ', 'k', ' ', ' ', ' ', 'w'}},
+                     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                     {'w', 's', 'g', 'k', 'h', 'g', 's', 'w'}},
          .ruch = 1,
          .enpassant = {0, 0},
          .roszada = {{0, 0}, {0, 0}}};
@@ -114,6 +115,7 @@ int ocena(struct szachownica gra)
         return -100;
     if (ocena == 1)
         return 100;
+    return -1;
 }
 ruchy *pamiec()
 {
@@ -125,7 +127,7 @@ ruchy *listaruchow(szachownica *plansza, int kolor)
 {
     glowalisty *glowa = (glowalisty *)malloc(sizeof(glowalisty));
     glowa->glowa = (ruchy *)malloc(sizeof(ruchy));
-    ruchy *ruch1;
+
     //printf("czy to dziala\n");
     ruchy *lista = glowa->glowa;
     glowalisty *poczatek = (glowalisty *)malloc(sizeof(glowalisty));
@@ -145,8 +147,8 @@ ruchy *listaruchow(szachownica *plansza, int kolor)
                     lista = ruchyhetmana(i, j, lista, plansza, 1);
                 if (plansza->plansza[i][j] == 'G')
                     lista = ruchygonca(i, j, lista, plansza, 1);
-                //if (plansza->plansza[i][j] == 'W')
-                // lista = ruchywiezy(i, j, lista, plansza, 1);
+                if (plansza->plansza[i][j] == 'W')
+                    lista = ruchywiezy(i, j, lista, plansza, 1);
                 if (plansza->plansza[i][j] == 'S')
                     lista = ruchyskoczka(i, j, lista, plansza, 1);
                 //printf("xd\n");
@@ -168,8 +170,8 @@ ruchy *listaruchow(szachownica *plansza, int kolor)
                     lista = ruchyhetmana(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 'g')
                     lista = ruchygonca(i, j, lista, plansza, -1);
-                //if (plansza->plansza[i][j] == 'w')
-                //lista = ruchywiezy(i, j, lista, plansza, -1);
+                if (plansza->plansza[i][j] == 'w')
+                    lista = ruchywiezy(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 's')
                     lista = ruchyskoczka(i, j, lista, plansza, -1);
                 if (plansza->plansza[i][j] == 'p')
@@ -355,65 +357,46 @@ int main()
         "\u2655", //krol czarny
         " ",
     };
-    int e = 0;
-    int f = 0;
-    int g = 0;
-    int h = 0;
+
     struct szachownica plansza = start();
     wypisanie(&plansza, Bierki);
     //printf("%d\n", ocena(plansza));
-    ruchy *glowa = listaruchow(&plansza, plansza.ruch);
+    ruchy *glowa;
     printf("czy dziala\n");
-    //wypiszliste(glowa);
-
-    // glowa = listaruchow(&plansza, plansza.ruch);
-    //wypiszliste(glowa);
-    //int ocena1 = negmax(&plansza, 1, -1000, 1000);
-    //printf("wynik negmax= %d\n", ocena1);
-    //printf("ocena wezla%d\n", ocena(plansza));
-
-    /*e = najlepszy_ruch1(&plansza, 1, -1000, 1000);
-    f = najlepszy_ruch2(&plansza, 1, -1000, 1000);
-    g = najlepszy_ruch3(&plansza, 1, -1000, 1000);
-    h = najlepszy_ruch4(&plansza, 1, -1000, 1000);
-    printf("%d%d %d%d\n",
-           e, f, g, h);
-    plansza = wykonajruchpatologiczny(plansza, glowa, e, f, g, h);
-    wypisanie(&plansza, Bierki);*/
     int i = 6, j = 5, k = 4, l = 5;
     ruchy *ruchgracza = malloc(sizeof(ruchy));
-    //ruchy *ruch;
-    ruchgracza->z[0] = i;
-    ruchgracza->z[1] = j;
-    ruchgracza->d[0] = k;
-    ruchgracza->d[1] = l;
+    ruchy *ruch;
     printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
-    plansza = wykonajruch(plansza, ruchgracza);
-    plansza.ruch = 1;
+    //plansza = wykonajruch(plansza, ruchgracza);
     printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
-    glowa = listaruchow(&plansza, plansza.ruch);
-    wypiszliste(glowa);
-    //for (int i = 0; i < 5; i++)
+    // glowa = listaruchow(&plansza, plansza.ruch);
+    //wypiszliste(glowa);
+    while (ocena(plansza) != 100 && ocena(plansza) != -100)
     {
-        ///ruch = jakiruch(&plansza, 4, -1000, 1000);
-        //plansza = wykonajruch(plansza, ruch);
-        //wypisanie(&plansza, Bierki);
-        //printf("\n");
-        //scanf("%d%d%d%d", &i, &j, &k, &l);
-        //ruchgracza->z[0] = i;
-        //ruchgracza->z[1] = j;
-        //ruchgracza->d[0] = k;
-        //ruchgracza->d[1] = l;
+        printf("enp %d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
+        glowa = listaruchow(&plansza, plansza.ruch);
+        wypiszliste(glowa);
+        ruch = jakiruch(&plansza, 5, -1000, 1000);
+        plansza = wykonajruch(plansza, ruch);
+        wypisanie(&plansza, Bierki);
+        printf("\n");
+        scanf("%d%d%d%d", &i, &j, &k, &l);
+        ruchgracza->z[0] = i;
+        ruchgracza->z[1] = j;
+        ruchgracza->d[0] = k;
+        ruchgracza->d[1] = l;
+        plansza = wykonajruch(plansza, ruchgracza);
+        zwolnienie_listy(glowa);
+        free(ruch);
     }
-    printf("%d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
-    wypisanie(&plansza, Bierki);
-    ruchgracza->z[0] = 6;
-    ruchgracza->z[1] = 3;
-    ruchgracza->d[0] = 4;
-    ruchgracza->d[1] = 3;
-    plansza = wykonajruch(plansza, ruchgracza);
-    wypisanie(&plansza, Bierki);
-    glowa = listaruchow(&plansza, 1);
-    wypiszliste(glowa);
-    // printf("czy szach %d\n", czy_szachowane(&plansza, 7, 3));
+    plansza.ruch = -1;
+    if (ocena(plansza) == 100)
+    {
+        printf("gratulcaje wygrales!\n");
+    }
+    if (ocena(plansza) == -100)
+    {
+        printf("porazka!\n");
+    }
+    free(ruchgracza);
 }

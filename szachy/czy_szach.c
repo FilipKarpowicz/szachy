@@ -4,7 +4,7 @@ ruchy *listaruchowbezkrola(szachownica *plansza, int kolor)
 {
     glowalisty *glowa = (glowalisty *)malloc(sizeof(glowalisty));
     glowa->glowa = (ruchy *)malloc(sizeof(ruchy));
-    ruchy *ruch1;
+
     //printf("czy to dziala\n");
     ruchy *lista = glowa->glowa;
     glowalisty *poczatek = (glowalisty *)malloc(sizeof(glowalisty));
@@ -64,7 +64,9 @@ ruchy *listaruchowbezkrola(szachownica *plansza, int kolor)
     lista = NULL;
     free(cos->next);
     //free(lista);
-    return glowa->glowa;
+    lista = glowa->glowa;
+    free(glowa);
+    return lista;
 }
 
 int czy_szachowane(szachownica *mapa, int y, int x)
@@ -79,6 +81,6 @@ int czy_szachowane(szachownica *mapa, int y, int x)
             return 1;
         glowa = glowa->next;
     }
-    //zwolnienie_listy(ptr);
+    zwolnienie_listy(ptr);
     return 0;
 }
