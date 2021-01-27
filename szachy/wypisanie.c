@@ -57,7 +57,7 @@ struct szachownica start(void)
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                      {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-                     {'w', 's', 'g', 'k', 'h', 'g', 's', 'w'}},
+                     {'w', ' ', ' ', 'k', 'h', 'g', 's', 'w'}},
          .ruch = 1,
          .enpassant = {0, 0},
          .roszada = {{0, 0}, {0, 0}}};
@@ -357,7 +357,8 @@ int main()
         "\u2655", //krol czarny
         " ",
     };
-
+    int ileruchow = 0;
+    char r;
     struct szachownica plansza = start();
     wypisanie(&plansza, Bierki);
     //printf("%d\n", ocena(plansza));
@@ -376,18 +377,45 @@ int main()
         printf("enp %d %d\n", plansza.enpassant[0], plansza.enpassant[1]);
         glowa = listaruchow(&plansza, plansza.ruch);
         wypiszliste(glowa);
-        ruch = jakiruch(&plansza, 5, -1000, 1000);
+        ruch = jakiruch(&plansza, 2, -1000, 1000);
+        if (plansza.plansza[ruch->z[0]][ruch->z[1]] == 'P' || plansza.plansza[ruch->z[0]][ruch->z[1]] == 'p')
+            ileruchow = 0;
+        else
+        {
+            ileruchow++;
+        }
         plansza = wykonajruch(plansza, ruch);
         wypisanie(&plansza, Bierki);
         printf("\n");
-        scanf("%d%d%d%d", &i, &j, &k, &l);
-        ruchgracza->z[0] = i;
-        ruchgracza->z[1] = j;
-        ruchgracza->d[0] = k;
-        ruchgracza->d[1] = l;
+        scanf("%c", &r);
+        if (r == 'r')
+        {
+            scanf("%d%d%d%d", &i, &j, &k, &l);
+            ruchgracza->z[0] = i;
+            ruchgracza->z[1] = j;
+            ruchgracza->d[0] = k;
+            ruchgracza->d[1] = l;
+            ruchgracza->roszada = 'r';
+        }
+        else
+        {
+            scanf("%d%d%d%d", &i, &j, &k, &l);
+            ruchgracza->z[0] = i;
+            ruchgracza->z[1] = j;
+            ruchgracza->d[0] = k;
+            ruchgracza->d[1] = l;
+        }
         plansza = wykonajruch(plansza, ruchgracza);
+        if (plansza.plansza[ruchgracza->z[0]][ruchgracza->z[1]] == 'P' || plansza.plansza[ruchgracza->z[0]][ruchgracza->z[1]] == 'p')
+            ileruchow = 0;
+        else
+        {
+            ileruchow++;
+        }
         zwolnienie_listy(glowa);
         free(ruch);
+        printf("ile jest ruchow bez ruchu piona %d\n", ileruchow);
+        ruchgracza->roszada = 'z';
     }
     plansza.ruch = -1;
     if (ocena(plansza) == 100)
