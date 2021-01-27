@@ -1,11 +1,11 @@
-DEPS = wypisanie.c czy_szach.c listaruchowgonca.c listaruchowhetmana.c listaruchowkrola.c listaruchowpionek.c listaruchowskoczka.c listaruchowwiezy.c negamax.c
+DEPS = main.c czy_szach.c listaruchowgonca.c listaruchowhetmana.c listaruchowkrola.c listaruchowpionek.c listaruchowskoczka.c listaruchowwiezy.c negamax.c
 
-wypisanie:$(DEPS)
-	gcc $(DEPS) -Wall --pedantic -o $@ 
+szachy:$(DEPS)
+	gcc $(DEPS) -Wall  -o $@ 
 
 %.o:%.c
 	cc -c $^ -o $@
 
 clean:
-	rm -f wypisanie
+	rm -f szachy
 	rm -f *.o

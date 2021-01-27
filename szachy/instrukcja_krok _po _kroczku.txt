@@ -1,0 +1,28 @@
+*******************************
+*                             * 
+*       WITAJ W NASZYCH       *
+*       SZACHACH GRACZU       * 
+*              !              *  
+*******************************
+
+aby skompilowac szachy wpisz make lub 
+gcc main.c czy_szach.c listaruchowgonca.c listaruchowhetmana.c listaruchowkrola.c listaruchowpionek.c listaruchowskoczka.c listaruchowwiezy.c negamax.c -o szachy
+
+przy uruchamianiu szachow nalezy podac dwa argumenty
+pierwszy poziom trudnosci 
+1 - amator
+2 - poczatkujacy
+3 - nowicjusz
+4 - zawodowiec
+5 - klasa swiatowa (Ostrożnie!)
+6 - legendarny (Uwaga:Tylko dla zabawy, wymaga mocnego komputera)
+oraz kto ma zaczynac ( grasz zawsze czarnymi)
+1 - biale 
+-1 - czarne
+
+*******************************
+*                             * 
+*         POWODZENIA          *
+*           GRACZU            * 
+*              !              *  
+*******************************
